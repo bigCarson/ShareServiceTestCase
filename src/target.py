@@ -117,7 +117,7 @@ def get_dimension_content(tm1, dimension):
     '''
     
     return_content = {
-        'Full Dimensioin':None,
+        'Full Dimension':None,
         'Dimension Element':None,
         'Dimension Edges':None,
         'Dimension Subset':None,
@@ -126,7 +126,7 @@ def get_dimension_content(tm1, dimension):
         
     }
     
-    return_content['Full Dimensioin'] = tm1.dimensions.get(dimension)
+    return_content['Full Dimension'] = tm1.dimensions.get(dimension)
     
     return_content['Dimension Element'] = tm1.elements.get_elements(dimension_name=dimension, hierarchy_name=dimension)
     
@@ -158,5 +158,7 @@ def get_dimension_content(tm1, dimension):
             ''' % (dimension, dimension, dimension,dimension,dimension,dimension,dimension,dimension,dimension,dimension,dimension)
     
     return_content['Attribute Content'] = tm1.cells.execute_mdx(_mdx)
+    
+    return return_content
     
     

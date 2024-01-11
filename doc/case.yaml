@@ -5,7 +5,7 @@
   Case Name: Update source object successfully
 
 - Case Id: ShareServiceCase0001    
-  Case Name: Sync Dimension, with mode “Full Dimension”,after select “sync full mode”, attribute name and subset name should be “all attribute” and “all public subsets”
+  Case Name: Sync Dimension, with mode “Full Dimension”
     Precondition:       
     - Assume target instance dose not exit dimension ShareServiceCase0001
   Expected Result:    
@@ -16,7 +16,7 @@
     - the public subset content of both dimensions are identical
 
 - Case Id: ShareServiceCase0002    
-  Case Name: Sync Dimension,with mode “Sync Full Dimension”, attribute name and subset name are empty
+  Case Name: Sync Dimension,with mode “Sync Full Element, attribute name and subset name are empty
   Precondition: 
     - Dimension: ShareServiceCase0002
     - Assume target instance dose not exit dimension ShareServiceCase0002
@@ -26,7 +26,7 @@
     - the public subsets of both dimensions are identical
   
 - Case Id: ShareServiceCase0003    
-  Case Name: Sync Dimension,with mode “Sync Full Dimension”, attribute name equal to "Name Long,String Name"
+  Case Name: Sync Dimension,with mode “Sync Full Element, attribute name equal to "Name Long,String Name"
   Precondition: 
     - Dimension: ShareServiceCase0003
     - Assume target instance dose not exit dimension ShareServiceCase0003
@@ -37,7 +37,7 @@
     - the public subsets of both dimensions are identical
 
 - Case Id: ShareServiceCase0004    
-  Case Name: Sync Dimension,with mode “Sync Full Dimension”, subset name equal to "PublicSubset,PublicSubset2"
+  Case Name: Sync Dimension,with mode “Sync Full Element, subset name equal to "PublicSubset,PublicSubset2"
   Precondition: 
     - Dimension: ShareServiceCase0004
     - Assume target instance dose not exit dimension ShareServiceCase0004
@@ -48,7 +48,7 @@
     - the public subset 'PublicSubset' and 'PublicSubset2' content of both dimensions are identical
 
 - Case Id: ShareServiceCase0005    
-  Case Name: Sync Dimension,with mode “Sync Full Dimension”, attribute name equal to "Name Long,String Name", subset name equal to "PublicSubset,PublicSubset2"
+  Case Name: Sync Dimension,with mode “Sync Full Element, attribute name equal to "Name Long,String Name", subset name equal to "PublicSubset,PublicSubset2"
   Precondition: 
     - Dimension: ShareServiceCase0005
     - Assume target instance dose not exit dimension ShareServiceCase0005
@@ -109,3 +109,36 @@
     - the attribute structure of both dimensions are identical
     - the public subsets of both dimensions are identical
     - the public subsets content of both dimensions are identical
+- Case ID: ShareServiceCase0011
+  Case Name: Sync Dimension, with mode 'USER DEFINE', with attribute name 'Name Long,String Name' subset name "PublicSubset,PublicSubset2"
+  Precondition: 
+    - Dimension: ShareServiceCase0011
+    - Assume target instance dose not exit dimension ShareServiceCase0010
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the public subsets of both dimensions are identical
+    - the public subsets content of both dimensions are identical
+- Case ID: ShareServiceCase0012
+  Case Name: Sync Dimension, with mode 'USER DEFINE', with attribute name 'Name Long,String Name'
+  Precondition:
+    - Assume target instance dose not exit dimension ShareServiceCase0012
+  Expected Result: 
+    - Attribute equal to [Name Long, String Name]
+    - Attribute content equal to 
+    - Subset equal to []
+- Case ID: ShareServiceCase0013
+  Case Name: Sync Dimension, with mode 'USER DEFINE', with SUBSET NAME "PublicSubset,PublicSubset2"
+  Precondition:
+    - Assume target instance dose not exit dimension ShareServiceCase0013
+  Expected Result: 
+    - Attribute equal to []
+    - Attribute content equal to 
+    - Subset equal to "PublicSubset,PublicSubset2"
+- Case ID: ShareServiceCase0014
+  Case Name: Sync Dimension, with mode 'USER DEFINE'
+  Precondition:
+    - Assume target instance dose not exit dimension ShareServiceCase0014
+  Expected Result: 
+    - Attribute equal to []
+    - Attribute content equal to 
+    - Subset equal to []

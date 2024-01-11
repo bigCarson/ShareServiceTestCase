@@ -40,3 +40,16 @@
   Attribute Name: Name Long,String Name
   Subset Name: PublicSubset,PublicSubset2
   Sync Elements In Subset: Y
+- Sync Type: Dimension 
+  Name: ShareServiceCase0012
+  Sync Mode: USER DEFINE
+  Attribute Name: Name Long,String Name
+- Sync Type: Dimension 
+  Name: ShareServiceCase0013
+  Sync Mode: USER DEFINE
+  Subset Name: PublicSubset,PublicSubset2
+  Sync Elements In Subset: Y
+- Sync Type: Dimension 
+  Name: ShareServiceCase0014
+  Sync Mode: USER DEFINE
+

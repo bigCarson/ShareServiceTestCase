@@ -2,7 +2,7 @@
 Author: bigCarson carson.li@cubewise.com
 Date: 2024-01-10 13:52:16
 LastEditors: carson.li@cubewise
-LastEditTime: 2024-01-11 17:25:34
+LastEditTime: 2024-01-11 22:30:42
 FilePath: /ShareServiceTestCase/src/utils.py
 Description: 
 
@@ -36,4 +36,4 @@ def wait_dimension_exit(tm1,dimension):
     while not exit_sign:
         exit_sign = tm1.dimensions.exists(dimension_name=dimension)
         if (datetime.datetime.now() - start_time).seconds > job_run_time: raise RuntimeError(f"Job execute time more than {str(job_run_time)} second")
-        time.sleep(10)
+        time.sleep(1)
