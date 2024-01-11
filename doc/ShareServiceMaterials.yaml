@@ -1,0 +1,42 @@
+- Sync Type: Dimension
+  Name: ShareServiceCase0001
+  Sync Mode: FULL DIMENSION
+- Sync Type: Dimension
+  Name: ShareServiceCase0002
+  Sync Mode: SYNC FULL ELEMENT
+- Sync Type: Dimension
+  Name: ShareServiceCase0003
+  Sync Mode: SYNC FULL ELEMENT
+  Attribute Name: Name Long,String Name
+- Sync Type: Dimension
+  Name: ShareServiceCase0004
+  Sync Mode: SYNC FULL ELEMENT
+  Subset Name: PublicSubset,PublicSubset2
+- Sync Type: Dimension
+  Name: ShareServiceCase0005
+  Sync Mode: SYNC FULL ELEMENT
+  Attribute Name: Name Long,String Name
+  Subset Name: PublicSubset,PublicSubset2
+- Sync Type: Dimension 
+  Name: ShareServiceCase0006
+  Sync Mode: FULL ELEMENT WITH ATTRS
+- Sync Type: Dimension 
+  Name: ShareServiceCase0007
+  Sync Mode: FULL ELEMENT WITH ATTRS
+  Subset Name: PublicSubset,PublicSubset2
+- Sync Type: Dimension 
+  Name: ShareServiceCase0008
+  Sync Mode: SYNC FULL ATTRS
+- Sync Type: Dimension 
+  Name: ShareServiceCase0009
+  Sync Mode: ALL PUBLIC SUBSETS
+- Sync Type: Dimension 
+  Name: ShareServiceCase0010
+  Sync Mode: ALL PUBLIC SUBSETS
+  Attribute Name: Name Long,String Name
+- Sync Type: Dimension 
+  Name: ShareServiceCase0011
+  Sync Mode: USER DEFINE
+  Attribute Name: Name Long,String Name
+  Subset Name: PublicSubset,PublicSubset2
+  Sync Elements In Subset: Y

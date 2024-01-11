@@ -1,0 +1,242 @@
+- ID: ShareServiceCase0001
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0001 
+  Hierarchy: ShareServiceCase0001 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0002
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0002 
+  Hierarchy: ShareServiceCase0002 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0003
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0003 
+  Hierarchy: ShareServiceCase0003 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0004
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0004 
+  Hierarchy: ShareServiceCase0004 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0005
+  Type: create_dimension
+  Dimension: ShareServiceCase0005 
+  Hierarchy: ShareServiceCase0005 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0006
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0006
+  Hierarchy: ShareServiceCase0006 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0007
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0007 
+  Hierarchy: ShareServiceCase0007 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0008
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0008
+  Hierarchy: ShareServiceCase0008 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0009
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0009
+  Hierarchy: ShareServiceCase0009 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0010
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0010
+  Hierarchy: ShareServiceCase0010 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+- ID: ShareServiceCase0011
+  Type: create_dimension
+  Target: source
+  Dimension: ShareServiceCase0011
+  Hierarchy: ShareServiceCase0011 
+  Element: Item1@Consolidated, Item2@Numeric, Item3@Numeric, Item4@String, Item5@String
+  Edge: Item1@Item2, Item1@Item3
+  Attribute: Name Long@Alias, Name Short@Alias, String Attri@String, Numeric Attri@Numeric
+  AttributeContent: Item1@Name Long=LongAliasItem1,Item1@Name Short=ShortAliasItem1, Item1@String Attri=String AttriItem1, Item1@Numeric Attri=1,Item2@Name Long=LongAliasItem2,Item2@Name Short=ShortAliasItem2, Item2@String Attri=String AttriItem2, Item2@Numeric Attri=2,Item3@Name Long=LongAliasItem3,Item3@Name Short=ShortAliasItem3, Item3@String Attri=String AttriItem3, Item3@Numeric Attri=3,Item4@Name Long=LongAliasItem4,Item4@Name Short=ShortAliasItem4, Item4@String Attri=String AttriItem4, Item4@Numeric Attri=4,Item5@Name Long=LongAliasItem5,Item5@Name Short=ShortAliasItem5, Item5@String Attri=String AttriItem5, Item5@Numeric Attri=5
+  Subset:
+    - Name: PublicSubset
+      Alias: testPublicSubset
+      Element: Item1,Item2
+      Private: False
+    - Name: PublicSubset1
+      Alias: testPublicSubset1
+      Element: Item1,Item3
+      Private: False
+    - Name: PublicSubset2
+      Alias: testPublicSubset2
+      Element: Item1,Item4
+      Private: False
+  

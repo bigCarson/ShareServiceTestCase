@@ -1,0 +1,111 @@
+- Case Id: ShareServiceCasePreStep1    
+  Case Name: Create an new job successfully
+
+- Case Id: ShareServiceCasePreStep2    
+  Case Name: Update source object successfully
+
+- Case Id: ShareServiceCase0001    
+  Case Name: Sync Dimension, with mode “Full Dimension”,after select “sync full mode”, attribute name and subset name should be “all attribute” and “all public subsets”
+    Precondition:       
+    - Assume target instance dose not exit dimension ShareServiceCase0001
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the attribute content of both dimensions are identical
+    - the public subsets of both dimensions are identical
+    - the public subset content of both dimensions are identical
+
+- Case Id: ShareServiceCase0002    
+  Case Name: Sync Dimension,with mode “Sync Full Dimension”, attribute name and subset name are empty
+  Precondition: 
+    - Dimension: ShareServiceCase0002
+    - Assume target instance dose not exit dimension ShareServiceCase0002
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the public subsets of both dimensions are identical
+  
+- Case Id: ShareServiceCase0003    
+  Case Name: Sync Dimension,with mode “Sync Full Dimension”, attribute name equal to "Name Long,String Name"
+  Precondition: 
+    - Dimension: ShareServiceCase0003
+    - Assume target instance dose not exit dimension ShareServiceCase0003
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - Attribute 'Name Long' and 'String Name' of both dimensioins are identical
+    - the public subsets of both dimensions are identical
+
+- Case Id: ShareServiceCase0004    
+  Case Name: Sync Dimension,with mode “Sync Full Dimension”, subset name equal to "PublicSubset,PublicSubset2"
+  Precondition: 
+    - Dimension: ShareServiceCase0004
+    - Assume target instance dose not exit dimension ShareServiceCase0004
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the public subsets of both dimensions are identical
+    - the public subset 'PublicSubset' and 'PublicSubset2' content of both dimensions are identical
+
+- Case Id: ShareServiceCase0005    
+  Case Name: Sync Dimension,with mode “Sync Full Dimension”, attribute name equal to "Name Long,String Name", subset name equal to "PublicSubset,PublicSubset2"
+  Precondition: 
+    - Dimension: ShareServiceCase0005
+    - Assume target instance dose not exit dimension ShareServiceCase0005
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - Attribute 'Name Long' and 'String Name' of both dimensioins are identical
+    - the public subsets of both dimensions are identical
+    - the public subset 'PublicSubset' and 'PublicSubset2' content of both dimensions are identical
+
+- Case Id: ShareServiceCase0006
+  Case Name: Sync Dimension, with mode 'FULL ELEMENT WITH ATTRS', empty subset name
+  Precondition: 
+    - Dimension: ShareServiceCase0006
+    - Assume target instance dose not exit dimension ShareServiceCase0006
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the attribute content of both dimensions are identical
+    - the public subsets of both dimensions are identical
+- Case Id: ShareServiceCase0007
+  Case Name: Sync Dimension, with mode 'FULL ELEMENT WITH ATTRS', with subset name "PublicSubset,PublicSubset2"
+  Precondition: 
+    - Dimension: ShareServiceCase0007
+    - Assume target instance dose not exit dimension ShareServiceCase0007
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the attribute content of both dimensions are identical
+    - the public subsets of both dimensions are identical
+    - the public subset 'PublicSubset' and 'PublicSubset2' content of both dimensions are identical
+- Case Id: ShareServiceCase0008
+  Case Name: Sync Dimension, with mode 'SYNC FULL ATTRS'
+  Precondition: 
+    - Dimension: ShareServiceCase0008
+    - Assume target instance dose not exit dimension ShareServiceCase0008
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the attribute content of both dimensions are identical
+    - the public subsets of both dimensions are identical
+- Case Id: ShareServiceCase0009
+  Case Name: Sync Dimension, with mode 'ALL PUBLIC SUBSETS'
+  Precondition: 
+    - Dimension: ShareServiceCase0009
+    - Assume target instance dose not exit dimension ShareServiceCase0009
+  Expected Result:    
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the public subsets of both dimensions are identical
+    - the public subsets content of both dimensions are identical
+- Case ID: ShareServiceCase0010
+  Case Name: Sync Dimension, with mode 'ALL PUBLIC SUBSETS', with attribute name 'Name Long,String Name'
+  Precondition: 
+    - Dimension: ShareServiceCase0010
+    - Assume target instance dose not exit dimension ShareServiceCase0010
+    - the elements of both dimensions are identical
+    - the attribute structure of both dimensions are identical
+    - the public subsets of both dimensions are identical
+    - the public subsets content of both dimensions are identical
