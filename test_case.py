@@ -185,6 +185,9 @@ def test_ShareServiceCase0002(target_tm1, source_tm1):
     target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)
     source_dimension_subset = source_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)
     assert target_dimension_subset == source_dimension_subset
+
+    for _target_subset_item in target_dimension_subset:
+        assert target_tm1.subsets.get_element_names(dimension_name=dimension_name, hierarchy_name=dimension_name, subset_name=_target_subset_item)
     for _target_subset_item, _source_subset_item in zip(target_dimension_subset, source_dimension_subset):
         assert target_tm1.subsets.get_element_names(dimension_name=dimension_name, hierarchy_name=dimension_name, subset_name=_target_subset_item) != source_tm1.subsets.get_element_names(dimension_name=dimension_name, hierarchy_name=dimension_name, subset_name=_source_subset_item)
     

@@ -19,5 +19,11 @@ class ExecutionMain:
         pass
     
 if __name__ == '__main__':
+
+    import uuid
+
+    test_id = str(uuid.uuid1())
     
-    pytest.main(['./test_case.py'])
+    report_path = f'--html=report/{test_id}/{test_id}.html'
+
+    pytest.main(['-v','./test_case.py', report_path])

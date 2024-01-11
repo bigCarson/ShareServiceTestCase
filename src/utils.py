@@ -25,3 +25,12 @@ def read_conf_from_yaml(section, event):
         content = yaml.safe_load(yaml_file)
 
         return content.get(section).get(event)
+    
+target_tm1 = TM1Service(**conf['target'])
+
+        # assert subset
+target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)
+assert target_dimension_subset == source_dimension_subset
+
+for _target_subset_item in target_dimension_subset:
+    assert target_tm1.subsets.get_element_names(dimension_name=dimension_name, hierarchy_name=dimension_name, subset_name=_target_subset_item)
