@@ -105,7 +105,58 @@ def update_sync_list():
     
     return 1
 
-
-
-
+def get_dimension_content(tm1, dimension):
+    
+    '''
+    'Full Dimensioin':None,
+    'Dimension Element':None,
+    'Dimension Edges':None,
+    'Dimension Subset':None,
+    'Attribute':None,
+    'Attribute Content':None
+    '''
+    
+    return_content = {
+        'Full Dimensioin':None,
+        'Dimension Element':None,
+        'Dimension Edges':None,
+        'Dimension Subset':None,
+        'Attribute':None,
+        'Attribute Content':None
         
+    }
+    
+    return_content['Full Dimensioin'] = tm1.dimensions.get(dimension)
+    
+    return_content['Dimension Element'] = tm1.elements.get_elements(dimension_name=dimension, hierarchy_name=dimension)
+    
+    return_content['Dimension Edges'] = tm1.elements.get_edges(dimension_name=dimension, hierarchy_name=dimension)
+
+    _list = []
+    
+    dimension_subset = tm1.subsets.get_all_names(dimension_name=dimension, hierarchy_name=dimension)
+    
+    for _ in dimension_subset:
+        _list.append(
+            {
+                'Name':_,
+                'Element':tm1.subsets.get_element_names(dimension_name=dimension, hierarchy_name=dimension, subset_name=_)
+            }
+        )
+    
+    return_content['Dimension Subset'] = _list
+    
+    return_content['Attribute'] = tm1.elements.get_element_attribute_names(dimension_name=dimension, hierarchy_name=dimension)
+    
+    _mdx = '''
+            SELECT
+            {[}ElementAttributes_%s].[}ElementAttributes_%s].[Name Long],[}ElementAttributes_%s].[}ElementAttributes_%s].[Name Short],[}ElementAttributes_%s].[}ElementAttributes_%s].[String Attri],[}ElementAttributes_%s].[}ElementAttributes_%s].[Numeric Attri]}
+            ON COLUMNS ,
+            {[%s].[%s].Members}
+            ON ROWS
+            FROM [}ElementAttributes_%s]
+            ''' % (dimension, dimension, dimension,dimension,dimension,dimension,dimension,dimension,dimension,dimension,dimension)
+    
+    return_content['Attribute Content'] = tm1.cells.execute_mdx(_mdx)
+    
+    

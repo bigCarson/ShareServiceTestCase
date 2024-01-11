@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Default Report Title Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    let visibleString = getQueryParameter('visible') || 'all';
+    visibleString = visibleString.toLowerCase();
+    const checkedItems = visibleString.split(',');
+
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++) {
+        filterItems[i].hidden = false;
+
+        if (visibleString != 'all') {
+            filterItems[i].checked = checkedItems.includes(filterItems[i].getAttribute('data-test-result'));
+            filterTable(filterItems[i]);
+        }
+    }
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+</script>
+    <h1>Default Report Title Report</h1>
+    <p>Report generated on 11-Jan-2024 at 16:44:52 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.2.0</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>Packages</td>
+        <td>{"pluggy": "1.0.0", "pytest": "7.2.0"}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>macOS-10.16-x86_64-i386-64bit</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{"allure-pytest": "2.11.1", "doc": "0.0.1", "html": "3.2.0", "metadata": "2.0.4"}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.9.1</td></tr></table>
+    <h2>Summary</h2>
+    <p>10 tests ran in 157.79 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">2 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">8 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable" col="duration">Duration</th>
+          <th class="sortable links" col="links">Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_case.py::test_create_job</td>
+          <td class="col-duration">0.99</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">share_service_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd54082ed60&gt;<br/><br/>    def test_create_job(share_service_tm1):<br/>    <br/>        current_time = datetime.datetime.now()<br/>    <br/>        job_status = False<br/>    <br/>        while (datetime.datetime.now() - current_time).seconds &lt; 120:<br/>    <br/>            try:<br/>&gt;               assert share_service_tm1.elements.execute_set_mdx(&#x27;{[Sys Sync Job].[Sys Sync Job].[%s]}&#x27; % job_id) != []<br/><span class="error">E               NameError: name &#x27;job_id&#x27; is not defined</span><br/><br/>test_case.py:29: NameError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_case.py::test_ShareServiceCase0001</td>
+          <td class="col-duration">13.84</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">target_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd5408b65e0&gt;<br/>source_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd5300289a0&gt;<br/><br/>    def test_ShareServiceCase0001(target_tm1, source_tm1):<br/>        &#x27;&#x27;&#x27;<br/>        Sync Dimension, with mode “Full Dimension”<br/>        &#x27;&#x27;&#x27;<br/>        dimension_name = &#x27;ShareServiceCase0001&#x27;<br/>    <br/>        exit_sign = False<br/>        start_time = datetime.datetime.now()<br/>        while not exit_sign:<br/>            time.sleep(10)<br/>            exit_sign = target_tm1.dimensions.exists(dimension_name=dimension_name)<br/>            if (datetime.datetime.now() - start_time).seconds &gt; job_run_time: raise RuntimeError(f&quot;Job execute time more than {str(job_run_time)} second&quot;)<br/>    <br/>    <br/>        # assert dimension<br/>        target_dimension = target_tm1.dimensions.get(dimension_name)<br/>        source_dimension = source_tm1.dimensions.get(dimension_name)<br/>        assert target_dimension == source_dimension<br/>    <br/>        # assert dimension element<br/>        target_dimension_elements = target_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements = source_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements == source_dimension_elements<br/>    <br/>        # assert dimension elements edges<br/>        target_dimension_elements_edges = target_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements_edges = source_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements_edges == source_dimension_elements_edges<br/>    <br/>        # assert subset<br/>        target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_subset = source_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>&gt;       assert target_dimension_subset == source_dimension_subset<br/><span class="error">E       AssertionError: assert [] == [&#x27;PublicSubse...ublicSubset2&#x27;]</span><br/><span class="error">E         Right contains 3 more items, first extra item: &#x27;PublicSubset&#x27;</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - [&#x27;PublicSubset&#x27;, &#x27;PublicSubset1&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><span class="error">E         + []</span><br/><br/>test_case.py:116: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_case.py::test_ShareServiceCase0002</td>
+          <td class="col-duration">13.36</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">target_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd5300280a0&gt;<br/>source_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd540823e50&gt;<br/><br/>    def test_ShareServiceCase0002(target_tm1, source_tm1):<br/>    <br/>        &#x27;&#x27;&#x27;<br/>        Case Name: Sync Dimension,with mode “Sync Full Dimension”, attribute name and subset name are empty<br/>        &#x27;&#x27;&#x27;<br/>        dimension_name = &#x27;ShareServiceCase0002&#x27;<br/>    <br/>        exit_sign = False<br/>        start_time = datetime.datetime.now()<br/>        while not exit_sign:<br/>            time.sleep(10)<br/>            exit_sign = target_tm1.dimensions.exists(dimension_name=dimension_name)<br/>            if (datetime.datetime.now() - start_time).seconds &gt; job_run_time: raise RuntimeError(f&quot;Job execute time more than {str(job_run_time)} second&quot;)<br/>    <br/>    <br/>            # assert dimension<br/>        target_dimension = target_tm1.dimensions.get(dimension_name)<br/>        source_dimension = source_tm1.dimensions.get(dimension_name)<br/>        assert target_dimension == source_dimension<br/>    <br/>            # assert dimension element<br/>        target_dimension_elements = target_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements = source_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements == source_dimension_elements<br/>    <br/>            # assert dimension elements edges<br/>        target_dimension_elements_edges = target_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements_edges = source_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements_edges == source_dimension_elements_edges<br/>    <br/>            # assert subset<br/>        target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_subset = source_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>&gt;       assert target_dimension_subset == source_dimension_subset<br/><span class="error">E       AssertionError: assert [] == [&#x27;PublicSubse...ublicSubset2&#x27;]</span><br/><span class="error">E         Right contains 3 more items, first extra item: &#x27;PublicSubset&#x27;</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - [&#x27;PublicSubset&#x27;, &#x27;PublicSubset1&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><span class="error">E         + []</span><br/><br/>test_case.py:188: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_case.py::test_ShareServiceCase0003</td>
+          <td class="col-duration">18.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">target_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd5300447f0&gt;<br/>source_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd540819f40&gt;<br/><br/>    def test_ShareServiceCase0003(target_tm1, source_tm1):<br/>    <br/>        &#x27;&#x27;&#x27;<br/>        Sync Dimension,with mode “Sync Full Dimension”, attribute name equal to &quot;Name Long,String Name&quot;<br/>        &#x27;&#x27;&#x27;<br/>        dimension_name = &#x27;ShareServiceCase0003&#x27;<br/>    <br/>        exit_sign = False<br/>        start_time = datetime.datetime.now()<br/>        while not exit_sign:<br/>            time.sleep(10)<br/>            exit_sign = target_tm1.dimensions.exists(dimension_name=dimension_name)<br/>            if (datetime.datetime.now() - start_time).seconds &gt; job_run_time: raise RuntimeError(f&quot;Job execute time more than {str(job_run_time)} second&quot;)<br/>    <br/>            # assert dimension<br/>        target_dimension = target_tm1.dimensions.get(dimension_name)<br/>        source_dimension = source_tm1.dimensions.get(dimension_name)<br/>        assert target_dimension == source_dimension<br/>    <br/>            # assert dimension element<br/>        target_dimension_elements = target_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements = source_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements == source_dimension_elements<br/>    <br/>            # assert dimension elements edges<br/>        target_dimension_elements_edges = target_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements_edges = source_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements_edges == source_dimension_elements_edges<br/>    <br/>            # assert subset<br/>        target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_subset = source_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>&gt;       assert target_dimension_subset == source_dimension_subset<br/><span class="error">E       AssertionError: assert [] == [&#x27;PublicSubse...ublicSubset2&#x27;]</span><br/><span class="error">E         Right contains 3 more items, first extra item: &#x27;PublicSubset&#x27;</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - [&#x27;PublicSubset&#x27;, &#x27;PublicSubset1&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><span class="error">E         + []</span><br/><br/>test_case.py:258: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_case.py::test_ShareServiceCase0004</td>
+          <td class="col-duration">12.98</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">target_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd540819df0&gt;<br/>source_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd56093e400&gt;<br/><br/>    def test_ShareServiceCase0004(target_tm1, source_tm1):<br/>    <br/>        &#x27;&#x27;&#x27;<br/>          Case Name: Sync Dimension,with mode “Sync Full Dimension”, subset name equal to &quot;PublicSubset,PublicSubset2&quot;<br/>        &#x27;&#x27;&#x27;<br/>        dimension_name = &#x27;ShareServiceCase0004&#x27;<br/>    <br/>        exit_sign = False<br/>        start_time = datetime.datetime.now()<br/>        while not exit_sign:<br/>            time.sleep(10)<br/>            exit_sign = target_tm1.dimensions.exists(dimension_name=dimension_name)<br/>            if (datetime.datetime.now() - start_time).seconds &gt; job_run_time: raise RuntimeError(f&quot;Job execute time more than {str(job_run_time)} second&quot;)<br/>    <br/>            # assert dimension<br/>        target_dimension = target_tm1.dimensions.get(dimension_name)<br/>        source_dimension = source_tm1.dimensions.get(dimension_name)<br/>        assert target_dimension == source_dimension<br/>    <br/>            # assert dimension element<br/>        target_dimension_elements = target_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements = source_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements == source_dimension_elements<br/>    <br/>            # assert dimension elements edges<br/>        target_dimension_elements_edges = target_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements_edges = source_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements_edges == source_dimension_elements_edges<br/>    <br/>            # assert subset<br/>        target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_subset = source_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>&gt;       assert target_dimension_subset == source_dimension_subset<br/><span class="error">E       AssertionError: assert [&#x27;PublicSubse...ublicSubset2&#x27;] == [&#x27;PublicSubse...ublicSubset2&#x27;]</span><br/><span class="error">E         At index 1 diff: &#x27;PublicSubset2&#x27; != &#x27;PublicSubset1&#x27;</span><br/><span class="error">E         Right contains one more item: &#x27;PublicSubset2&#x27;</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - [&#x27;PublicSubset&#x27;, &#x27;PublicSubset1&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><span class="error">E         ?                  -----------------</span><br/><span class="error">E         + [&#x27;PublicSubset&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><br/>test_case.py:326: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_case.py::test_ShareServiceCase0005</td>
+          <td class="col-duration">14.13</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">target_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd56093ed90&gt;<br/>source_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd5509a1ca0&gt;<br/><br/>    def test_ShareServiceCase0005(target_tm1, source_tm1):<br/>    <br/>        &#x27;&#x27;&#x27;<br/>        Case Name: Sync Dimension,with mode “Sync Full Dimension”, attribute name equal to &quot;Name Long,String Name&quot;, subset name equal to &quot;PublicSubset,PublicSubset2&quot;<br/>        &#x27;&#x27;&#x27;<br/>        dimension_name = &#x27;ShareServiceCase0005&#x27;<br/>    <br/>        exit_sign = False<br/>        start_time = datetime.datetime.now()<br/>        while not exit_sign:<br/>            time.sleep(10)<br/>            exit_sign = target_tm1.dimensions.exists(dimension_name=dimension_name)<br/>            if (datetime.datetime.now() - start_time).seconds &gt; job_run_time: raise RuntimeError(f&quot;Job execute time more than {str(job_run_time)} second&quot;)<br/>    <br/>            # assert dimension<br/>        target_dimension = target_tm1.dimensions.get(dimension_name)<br/>        source_dimension = source_tm1.dimensions.get(dimension_name)<br/>        assert target_dimension == source_dimension<br/>    <br/>            # assert dimension element<br/>        target_dimension_elements = target_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements = source_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements == source_dimension_elements<br/>    <br/>            # assert dimension elements edges<br/>        target_dimension_elements_edges = target_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements_edges = source_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements_edges == source_dimension_elements_edges<br/>    <br/>            # assert subset<br/>        target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_subset = source_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>&gt;       assert target_dimension_subset == source_dimension_subset<br/><span class="error">E       AssertionError: assert [&#x27;PublicSubse...ublicSubset2&#x27;] == [&#x27;PublicSubse...ublicSubset2&#x27;]</span><br/><span class="error">E         At index 1 diff: &#x27;PublicSubset2&#x27; != &#x27;PublicSubset1&#x27;</span><br/><span class="error">E         Right contains one more item: &#x27;PublicSubset2&#x27;</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - [&#x27;PublicSubset&#x27;, &#x27;PublicSubset1&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><span class="error">E         ?                  -----------------</span><br/><span class="error">E         + [&#x27;PublicSubset&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><br/>test_case.py:397: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_case.py::test_ShareServiceCase0006</td>
+          <td class="col-duration">13.09</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">target_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd56093a8b0&gt;<br/>source_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd560941fa0&gt;<br/><br/>    def test_ShareServiceCase0006(target_tm1, source_tm1):<br/>        &#x27;&#x27;&#x27;<br/>        Case Name: Sync Dimension, with mode &#x27;FULL ELEMENT WITH ATTRS&#x27;, empty subset name<br/>        &#x27;&#x27;&#x27;<br/>        dimension_name = &#x27;ShareServiceCase0006&#x27;<br/>    <br/>        exit_sign = False<br/>        start_time = datetime.datetime.now()<br/>        while not exit_sign:<br/>            time.sleep(10)<br/>            exit_sign = target_tm1.dimensions.exists(dimension_name=dimension_name)<br/>            if (datetime.datetime.now() - start_time).seconds &gt; job_run_time: raise RuntimeError(f&quot;Job execute time more than {str(job_run_time)} second&quot;)<br/>    <br/>            # assert dimension<br/>        target_dimension = target_tm1.dimensions.get(dimension_name)<br/>        source_dimension = source_tm1.dimensions.get(dimension_name)<br/>        assert target_dimension == source_dimension<br/>    <br/>            # assert dimension element<br/>        target_dimension_elements = target_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements = source_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements == source_dimension_elements<br/>    <br/>            # assert dimension elements edges<br/>        target_dimension_elements_edges = target_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements_edges = source_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements_edges == source_dimension_elements_edges<br/>    <br/>            # assert subset<br/>        target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_subset = source_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>&gt;       assert target_dimension_subset == source_dimension_subset<br/><span class="error">E       AssertionError: assert [] == [&#x27;PublicSubse...ublicSubset2&#x27;]</span><br/><span class="error">E         Right contains 3 more items, first extra item: &#x27;PublicSubset&#x27;</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - [&#x27;PublicSubset&#x27;, &#x27;PublicSubset1&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><span class="error">E         + []</span><br/><br/>test_case.py:462: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_case.py::test_ShareServiceCase0007</td>
+          <td class="col-duration">13.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">target_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd560941d30&gt;<br/>source_tm1 = &lt;TM1py.Services.TM1Service.TM1Service object at 0x7fd55097fbb0&gt;<br/><br/>    def test_ShareServiceCase0007(target_tm1, source_tm1):<br/>        &#x27;&#x27;&#x27;<br/>        Case Name: Sync Dimension, with mode &#x27;FULL ELEMENT WITH ATTRS&#x27;, with subset name &quot;PublicSubset,PublicSubset2&quot;<br/>        &#x27;&#x27;&#x27;<br/>        dimension_name = &#x27;ShareServiceCase0007&#x27;<br/>    <br/>        wait_dimension_exit(target_tm1, dimension_name)<br/>    <br/>            # assert dimension<br/>        target_dimension = target_tm1.dimensions.get(dimension_name)<br/>        source_dimension = source_tm1.dimensions.get(dimension_name)<br/>        assert target_dimension == source_dimension<br/>    <br/>            # assert dimension element<br/>        target_dimension_elements = target_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements = source_tm1.elements.get_elements(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements == source_dimension_elements<br/>    <br/>            # assert dimension elements edges<br/>        target_dimension_elements_edges = target_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_elements_edges = source_tm1.elements.get_edges(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        assert target_dimension_elements_edges == source_dimension_elements_edges<br/>    <br/>            # assert subset<br/>        target_dimension_subset = target_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>        source_dimension_subset = source_tm1.subsets.get_all_names(dimension_name=dimension_name, hierarchy_name=dimension_name)<br/>&gt;       assert target_dimension_subset == source_dimension_subset<br/><span class="error">E       AssertionError: assert [&#x27;PublicSubse...ublicSubset2&#x27;] == [&#x27;PublicSubse...ublicSubset2&#x27;]</span><br/><span class="error">E         At index 1 diff: &#x27;PublicSubset2&#x27; != &#x27;PublicSubset1&#x27;</span><br/><span class="error">E         Right contains one more item: &#x27;PublicSubset2&#x27;</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - [&#x27;PublicSubset&#x27;, &#x27;PublicSubset1&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><span class="error">E         ?                  -----------------</span><br/><span class="error">E         + [&#x27;PublicSubset&#x27;, &#x27;PublicSubset2&#x27;]</span><br/><br/>test_case.py:522: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_case.py::test_update_source_object</td>
+          <td class="col-duration">3.83</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_case.py::test_update_testing_material</td>
+          <td class="col-duration">1.20</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody></table></body></html>
